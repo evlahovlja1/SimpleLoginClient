@@ -1,4 +1,4 @@
-package sample;
+package ba.unsa.etf.rpr;
 
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -16,6 +16,7 @@ public class Controller {
 
 
     public void loginAction(ActionEvent actionEvent) {
+        //NON-UI THREAD!!
         Task<Object> sendRequest = new Task<>() {
             @Override
             protected Object call() throws Exception {
@@ -28,8 +29,13 @@ public class Controller {
 
         sendRequest.run();
 
+        //UI THREAD!!
         sendRequest.setOnSucceeded(workerStateEvent -> {
             username.setText("SUCCESS");
+        });
+
+        sendRequest.setOnFailed(workerStateEvent -> {
+            username.setText("FAIL");
         });
     }
 }
